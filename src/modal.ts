@@ -1,4 +1,4 @@
-import { App, FuzzySuggestModal, TFolder, Notice } from 'obsidian';
+import { App, FuzzySuggestModal, TFolder, Notice, Vault } from 'obsidian';
 
 const EMPTY_TEXT = 'No files found to append content. Enter to create a new one.'
 const PLACEHOLDER_TEXT = 'Type file to append to or create';
@@ -20,11 +20,12 @@ export class ChooseFolderModal extends FuzzySuggestModal<TFolder>{
     }
 
     init() {
-        const files = this.app.vault.getFiles();
 		const folders = new Set() as Set<TFolder>;
-		for (const file of files) {
-			folders.add(file.parent)
-		}
+        Vault.recurseChildren(this.app.vault.getRoot(), (file) => {
+            if (file instanceof TFolder) {
+                folders.add(file);
+            }
+        });
 		this.folders = Array.from(folders);
         this.emptyStateText = EMPTY_TEXT;
         this.setPlaceholder(PLACEHOLDER_TEXT);
@@ -84,7 +85,7 @@ export class ChooseFolderModal extends FuzzySuggestModal<TFolder>{
             const file = await this.app.vault.create(fileName, "");
             this.app.workspace.activeLeaf.openFile(file);
           } catch (error) {
-              new Notice(error);
+              new Notice(error.toString());
           }
       }
 

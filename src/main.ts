@@ -9,15 +9,8 @@ export default class AdvancedNewFilePlugin extends Plugin {
 		this.addCommand({
 			id: 'advanced-new-file',
 			name: 'Create note',
-			checkCallback: (checking: boolean) => {
-				let leaf = this.app.workspace.activeLeaf;
-				if (leaf) {
-					if (!checking) {
-						new ChooseFolderModal(this.app).open();
-					}
-					return true;
-				}
-				return false;
+			callback: () => {
+				new ChooseFolderModal(this.app).open();
 			}
 		});
 	}
