@@ -11,7 +11,9 @@ The plugin is heavily inspired by [Note refactor](https://github.com/lynchjames/
 
 Spawn command `advanced new file` and choose directory.
 
-![Demo](images/demo.gif)
+https://user-images.githubusercontent.com/2872741/138254702-b3e6a9b0-0277-4751-be88-b31607e2090d.mp4
+
+
 
 ### How to develop
 
