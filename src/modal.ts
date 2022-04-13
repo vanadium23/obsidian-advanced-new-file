@@ -188,7 +188,6 @@ export class CreateNoteModal extends Modal {
             const File = await vault.create(fullFilePath, '');
             // Create the file and open it in the active leaf
             await this.app.workspace.activeLeaf.openFile(File);
-            await vault.modify(File, 'ABC');
         } catch (error) {
             new Notice(error.toString());
         }
