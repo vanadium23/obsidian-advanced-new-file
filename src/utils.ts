@@ -1,5 +1,4 @@
-import { normalizePath } from "obsidian";
-
+import { normalizePath } from 'obsidian';
 interface ParsedPath {
   /** The full directory path such as '/home/user/dir' or 'folder/sub' */
   dir: string;
@@ -9,23 +8,39 @@ interface ParsedPath {
 
 export const path = {
   /**
-   * Parses a path string into directory and file name
-   * Supports '/foo/bar/file' or '\foo\bar\file'
+   * Parses the file path into a directory and file name.
+   * If the path string does not include a file name, it will default to
+   * 'Untitled'.
+   *
+   * @example
+   * parse('/one/two/file name')
+   * // ==> { dir: '/one/two', name: 'file name' }
+   *
+   * parse('\\one\\two\\file name')
+   * // ==> { dir: '/one/two', name: 'file name' }
+   *
+   * parse('')
+   * // ==> { dir: '', name: 'Untitled' }
+   *
+   * parse('/one/two/')
+   * // ==> { dir: '/one/two/', name: 'Untitled' }
    */
-  parse(path: string): ParsedPath {
+  parse(pathString: string): ParsedPath {
     const regex = /(?<dir>([^/\\]+[/\\])*)(?<name>[^/\\]*$)/;
-    const match = normalizePath(path).match(regex);
+    const match = String(pathString).match(regex);
     const { dir, name } = match?.groups;
-    return { dir, name };
+    return { dir, name: name || 'Untitled' };
   },
+
   /**
-   * Joins multiple strings into a normalized path
+   * Joins multiple strings into a path using Obsidian's preferred format.
+   * The resulting path is normalized with Obsidian's `normalizePath` func.
+   * - Converts path separators to '/' on all platforms
+   * - Removes duplicate separators
+   * - Removes trailing slash
    */
   join(...strings: string[]): string {
-    const parts = strings.map((s) => s.trim()).filter((s) => s != null);
-    // TODO: Test on windows
-    // I'm not sure if `normalizePath` will automatically convert `/` to `\`
-    // on windows.
-    return normalizePath(parts.join("/"));
+    const parts = strings.map((s) => String(s).trim()).filter((s) => s != null);
+    return normalizePath(parts.join('/'));
   },
 };
