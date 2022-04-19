@@ -4,21 +4,23 @@
   "description": "Create notes in chosen folder for Obsidian (https://obsidian.md)",
   "main": "main.js",
   "scripts": {
-    "dev": "rollup --config rollup.config.js -w",
-    "build": "rollup --config rollup.config.js --environment BUILD:production"
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^18.0.0",
-    "@rollup/plugin-node-resolve": "^11.2.1",
-    "@rollup/plugin-typescript": "^8.2.1",
-    "@types/node": "^14.14.37",
-    "obsidian": "^0.12.0",
+    "@types/node": "^16.11.27",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "@typescript-eslint/parser": "^5.20.0",
+    "builtin-modules": "^3.2.0",
+    "esbuild": "^0.13.12",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "obsidian": "^0.14.6",
     "obsidian-plugin-cli": "^0.8.1",
     "prettier": "^2.6.2",
-    "rollup": "^2.32.1",
     "tslib": "^2.2.0",
     "typescript": "^4.2.4"
   }
