@@ -9,9 +9,9 @@ The plugin is heavily inspired by [Note refactor](https://github.com/lynchjames/
 
 **Hint:** you can set command `advanced new file` to shortcut like `Ctrl/Cmd` + `Alt` + `N`.
 
-Spawn command `advanced new file` and choose directory.
+Spawn command `advanced new file` and choose directory. Then you can type full path to file.
 
-https://user-images.githubusercontent.com/2872741/138254702-b3e6a9b0-0277-4751-be88-b31607e2090d.mp4
+https://user-images.githubusercontent.com/8286271/163267550-3699ec7d-27e3-4ea4-9bba-a0d9afeef44e.mp4
 
 
 
