@@ -122,7 +122,7 @@ export default class CreateNoteModal extends Modal {
       .map((_, index, arr) => arr.slice(0, index + 1).join('/'));
 
     // Create each directory if it does not exist
-    for (let subPath of subPaths) {
+    for (const subPath of subPaths) {
       const directoryExists = await adapter.exists(path.join(root, subPath));
       if (!directoryExists) {
         await adapter.mkdir(path.join(root, subPath));

@@ -28,7 +28,7 @@ export const path = {
   parse(pathString: string): ParsedPath {
     const regex = /(?<dir>([^/\\]+[/\\])*)(?<name>[^/\\]*$)/;
     const match = String(pathString).match(regex);
-    const { dir, name } = match?.groups;
+    const { dir, name } = match && match.groups;
     return { dir, name: name || 'Untitled' };
   },
 

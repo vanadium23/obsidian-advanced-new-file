@@ -4,6 +4,7 @@
   "description": "Create notes in chosen folder for Obsidian (https://obsidian.md)",
   "main": "main.js",
   "scripts": {
+    "lint": "eslint . --ext .ts && tsc --noEmit && prettier --check src/",
     "dev": "node esbuild.config.mjs",
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
   },
