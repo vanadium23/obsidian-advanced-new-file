@@ -1,9 +1,8 @@
 import { App, FuzzySuggestModal, TFolder, Vault } from 'obsidian';
 import CreateNoteModal from './CreateNoteModal';
 
-const EMPTY_TEXT =
-  'No files found to append content. Enter to create a new one.';
-const PLACEHOLDER_TEXT = 'Type file to append to or create';
+const EMPTY_TEXT = 'No folder found. Press esc to dismiss.';
+const PLACEHOLDER_TEXT = 'Type folder name to fuzzy find.';
 const instructions = [
   { command: '↑↓', purpose: 'to navigate' },
   { command: '↵', purpose: 'to choose folder' },
@@ -15,6 +14,7 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
   chooseFolder: HTMLDivElement;
   suggestionEmpty: HTMLDivElement;
   noSuggestion: boolean;
+  newDirectoryPath: string;
   createNoteModal: CreateNoteModal;
 
   constructor(app: App) {
@@ -48,21 +48,41 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
 
   onNoSuggestion() {
     this.noSuggestion = true;
+    this.newDirectoryPath = this.inputEl.value;
     this.resultContainerEl.childNodes.forEach((c) =>
       c.parentNode.removeChild(c)
     );
     this.chooseFolder.innerText = this.inputEl.value;
-    this.itemInstructionMessage(this.chooseFolder, 'No folder found');
+    this.itemInstructionMessage(
+      this.chooseFolder,
+      'Press ↵ or append / to create folder.'
+    );
     this.resultContainerEl.appendChild(this.chooseFolder);
     this.resultContainerEl.appendChild(this.suggestionEmpty);
   }
 
+  shouldCreateFolder(evt: MouseEvent | KeyboardEvent): boolean {
+    if (this.newDirectoryPath.endsWith('/')) {
+      return true;
+    }
+    if (evt instanceof KeyboardEvent && evt.key == 'Enter') {
+      return true;
+    }
+    return false;
+  }
+
   onChooseItem(item: TFolder, evt: MouseEvent | KeyboardEvent): void {
     if (this.noSuggestion) {
-      // TODO make something on
-      return;
+      if (!this.shouldCreateFolder(evt)) {
+        return;
+      }
+      this.createNoteModal.setFolder(
+        this.app.vault.getRoot(),
+        this.newDirectoryPath
+      );
+    } else {
+      this.createNoteModal.setFolder(item, '');
     }
-    this.createNoteModal.setFolder(item);
     this.createNoteModal.open();
   }
 

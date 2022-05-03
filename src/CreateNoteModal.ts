@@ -11,6 +11,7 @@ import { path } from './utils';
 
 export default class CreateNoteModal extends Modal {
   folder: TFolder;
+  newDirectoryPath: string;
   inputEl: HTMLInputElement;
   instructionsEl: HTMLElement;
   inputListener: EventListener;
@@ -65,8 +66,9 @@ export default class CreateNoteModal extends Modal {
     this.inputListener = this.listenInput.bind(this);
   }
 
-  setFolder(folder: TFolder) {
+  setFolder(folder: TFolder, newDirectoryPath: string) {
     this.folder = folder;
+    this.newDirectoryPath = newDirectoryPath;
   }
 
   listenInput(evt: KeyboardEvent) {
@@ -138,7 +140,8 @@ export default class CreateNoteModal extends Modal {
   async createNewNote(input: string): Promise<void> {
     const { vault } = this.app;
     const { adapter } = vault;
-    const { dir, name } = path.parse(input);
+    const prependDirInput = path.join(this.newDirectoryPath, input);
+    const { dir, name } = path.parse(prependDirInput);
     const directoryPath = path.join(this.folder.path, dir);
     const filePath = path.join(directoryPath, `${name}.md`);
 
