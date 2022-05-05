@@ -5,6 +5,7 @@ const EMPTY_TEXT = 'No folder found. Press esc to dismiss.';
 const PLACEHOLDER_TEXT = 'Type folder name to fuzzy find.';
 const instructions = [
   { command: '↑↓', purpose: 'to navigate' },
+  { command: 'Tab ↹', purpose: 'to autocomplete folder' },
   { command: '↵', purpose: 'to choose folder' },
   { command: 'esc', purpose: 'to dismiss' },
 ];
@@ -16,6 +17,7 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
   noSuggestion: boolean;
   newDirectoryPath: string;
   createNoteModal: CreateNoteModal;
+  inputListener: EventListener;
 
   constructor(app: App) {
     super(app);
@@ -35,6 +37,8 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
     this.setInstructions(instructions);
     this.initChooseFolderItem();
     this.createNoteModal = new CreateNoteModal(this.app);
+
+    this.inputListener = this.listenInput.bind(this);
   }
 
   getItems(): TFolder[] {
@@ -69,6 +73,28 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
       return true;
     }
     return false;
+  }
+
+  findCurrentSelect(): HTMLElement {
+    return document.querySelector('.suggestion-item.is-selected');
+  }
+
+  listenInput(evt: KeyboardEvent) {
+    if (evt.key == 'Tab') {
+      this.inputEl.value = this.findCurrentSelect()?.innerText;
+      // to disable tab selections on input
+      evt.preventDefault();
+    }
+  }
+
+  onOpen() {
+    super.onOpen();
+    this.inputEl.addEventListener('keydown', this.inputListener);
+  }
+
+  onClose() {
+    this.inputEl.removeEventListener('keydown', this.inputListener);
+    super.onClose();
   }
 
   onChooseItem(item: TFolder, evt: MouseEvent | KeyboardEvent): void {
