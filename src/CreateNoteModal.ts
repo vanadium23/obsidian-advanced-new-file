@@ -7,17 +7,21 @@ import {
   Modal,
   Instruction,
 } from 'obsidian';
+import { NewFileLocation } from './enums';
 import { path } from './utils';
 
 export default class CreateNoteModal extends Modal {
+  mode: NewFileLocation;
   folder: TFolder;
   newDirectoryPath: string;
   inputEl: HTMLInputElement;
   instructionsEl: HTMLElement;
   inputListener: EventListener;
 
-  constructor(app: App) {
+  constructor(app: App, mode: NewFileLocation) {
     super(app);
+
+    this.mode = mode;
 
     // create input
     this.inputEl = document.createElement('input');
@@ -157,7 +161,13 @@ export default class CreateNoteModal extends Modal {
       }
       const File = await vault.create(filePath, '');
       // Create the file and open it in the active leaf
-      await this.app.workspace.activeLeaf.openFile(File);
+      if (this.mode === NewFileLocation.NewPane) {
+        const leaf = this.app.workspace.splitLeafOrActive();
+        await leaf.openFile(File);
+      } else {
+        // default for active pane
+        await this.app.workspace.activeLeaf.openFile(File);
+      }
     } catch (error) {
       new Notice(error.toString());
     }

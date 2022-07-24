@@ -1,4 +1,5 @@
 import { normalizePath } from 'obsidian';
+
 interface ParsedPath {
   /** The full directory path such as '/home/user/dir' or 'folder/sub' */
   dir: string;
