@@ -1,5 +1,6 @@
 import { App, FuzzySuggestModal, TFolder, Vault } from 'obsidian';
 import CreateNoteModal from './CreateNoteModal';
+import { NewFileLocation } from './enums';
 
 const EMPTY_TEXT = 'No folder found. Press esc to dismiss.';
 const PLACEHOLDER_TEXT = 'Type folder name to fuzzy find.';
@@ -11,6 +12,7 @@ const instructions = [
 ];
 
 export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
+  mode: NewFileLocation;
   folders: TFolder[];
   chooseFolder: HTMLDivElement;
   suggestionEmpty: HTMLDivElement;
@@ -19,8 +21,9 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
   createNoteModal: CreateNoteModal;
   inputListener: EventListener;
 
-  constructor(app: App) {
+  constructor(app: App, mode: NewFileLocation) {
     super(app);
+    this.mode = mode;
     this.init();
   }
 
@@ -36,7 +39,7 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
     this.setPlaceholder(PLACEHOLDER_TEXT);
     this.setInstructions(instructions);
     this.initChooseFolderItem();
-    this.createNoteModal = new CreateNoteModal(this.app);
+    this.createNoteModal = new CreateNoteModal(this.app, this.mode);
 
     this.inputListener = this.listenInput.bind(this);
   }

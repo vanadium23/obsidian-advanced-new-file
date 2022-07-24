@@ -1,5 +1,6 @@
 import { Plugin } from 'obsidian';
 import ChooseFolderModal from './ChooseFolderModal';
+import { NewFileLocation } from './enums';
 
 export default class AdvancedNewFilePlugin extends Plugin {
   async onload() {
@@ -7,9 +8,17 @@ export default class AdvancedNewFilePlugin extends Plugin {
 
     this.addCommand({
       id: 'advanced-new-file',
-      name: 'Create note',
+      name: 'Create note in the current pane',
       callback: () => {
-        new ChooseFolderModal(this.app).open();
+        new ChooseFolderModal(this.app, NewFileLocation.CurrentPane).open();
+      },
+    });
+
+    this.addCommand({
+      id: 'advanced-new-file-new-pane',
+      name: 'Create note in a new pane',
+      callback: () => {
+        new ChooseFolderModal(this.app, NewFileLocation.NewPane).open();
       },
     });
   }

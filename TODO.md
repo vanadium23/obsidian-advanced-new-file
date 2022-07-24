@@ -11,3 +11,4 @@
 * [x] Rewrite [[README]].
 * [c] Add config for folder exclusion.
   - Decide to create on all folders.
+
