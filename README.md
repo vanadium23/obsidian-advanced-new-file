@@ -3,7 +3,7 @@
 Obsidian Advanced New file is a plugin for [Obsidian](https://obsidian.md/), that provide functionality to choose folder over note creation.
 The new note file is created with `Untitled.md` filename just to provide same behavior as default Obsidian.
 
-The plugin is heavily inspired by [Note refactor](https://github.com/lynchjames/note-refactor-obsidian) amd [similar extension](https://marketplace.visualstudio.com/items?itemName=dkundel.vscode-new-file) for Vs Code.
+The plugin is heavily inspired by [Note refactor](https://github.com/lynchjames/note-refactor-obsidian) and [similar extension](https://marketplace.visualstudio.com/items?itemName=dkundel.vscode-new-file) for Vs Code.
 
 ## Feature
 
