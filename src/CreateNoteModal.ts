@@ -161,13 +161,14 @@ export default class CreateNoteModal extends Modal {
       }
       const File = await vault.create(filePath, '');
       // Create the file and open it in the active leaf
+      let leaf = this.app.workspace.getLeaf(false);
       if (this.mode === NewFileLocation.NewPane) {
-        const leaf = this.app.workspace.splitLeafOrActive();
-        await leaf.openFile(File);
-      } else {
+        leaf = this.app.workspace.splitLeafOrActive();
+      } else if (!leaf) {
         // default for active pane
-        await this.app.workspace.activeLeaf.openFile(File);
+        leaf = this.app.workspace.getLeaf(true);
       }
+      await leaf.openFile(File);
     } catch (error) {
       new Notice(error.toString());
     }
