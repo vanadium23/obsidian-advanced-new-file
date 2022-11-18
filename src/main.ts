@@ -21,6 +21,14 @@ export default class AdvancedNewFilePlugin extends Plugin {
         new ChooseFolderModal(this.app, NewFileLocation.NewPane).open();
       },
     });
+
+    this.addCommand({
+      id: 'advanced-new-file-new-tab',
+      name: 'Create note in a new tab',
+      callback: () => {
+        new ChooseFolderModal(this.app, NewFileLocation.NewTab).open();
+      },
+    });
   }
 
   onunload() {
