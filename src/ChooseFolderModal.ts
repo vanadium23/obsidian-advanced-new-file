@@ -1,4 +1,4 @@
-import { App, FuzzySuggestModal, TFolder, Vault } from 'obsidian';
+import { App, FuzzySuggestModal, TFolder, Vault, MarkdownView, TFile } from 'obsidian';
 import CreateNoteModal from './CreateNoteModal';
 import { NewFileLocation } from './enums';
 
@@ -29,12 +29,23 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
 
   init() {
     const folders = new Set() as Set<TFolder>;
+    const sortedFolders = [] as TFolder[];
+    let leaf = this.app.workspace.getLeaf(false);
+    if (leaf &&
+      leaf.view instanceof MarkdownView &&
+      leaf.view.file instanceof TFile &&
+      leaf.view.file.parent instanceof TFolder) {
+      // pre-select current folder
+      folders.add(leaf.view.file.parent);
+      sortedFolders.push(leaf.view.file.parent);
+    }
     Vault.recurseChildren(this.app.vault.getRoot(), (file) => {
-      if (file instanceof TFolder) {
+      if (file instanceof TFolder && !folders.has(file)) {
         folders.add(file);
+        sortedFolders.push(file);
       }
     });
-    this.folders = Array.from(folders);
+    this.folders = sortedFolders;
     this.emptyStateText = EMPTY_TEXT;
     this.setPlaceholder(PLACEHOLDER_TEXT);
     this.setInstructions(instructions);
