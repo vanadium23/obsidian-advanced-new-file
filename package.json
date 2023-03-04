@@ -1,6 +1,6 @@
 {
   "name": "obsidian-advanced-new-file",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Create notes in chosen folder for Obsidian (https://obsidian.md)",
   "main": "main.js",
   "scripts": {
