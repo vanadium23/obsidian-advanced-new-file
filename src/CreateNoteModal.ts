@@ -77,6 +77,8 @@ export default class CreateNoteModal extends Modal {
 
   listenInput(evt: KeyboardEvent) {
     if (evt.key === 'Enter') {
+      // prevent enter after note creation
+      evt.preventDefault();
       // Do work
       this.createNewNote(this.inputEl.value);
       this.close();
