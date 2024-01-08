@@ -1,4 +1,11 @@
-import { App, FuzzySuggestModal, TFolder, Vault, MarkdownView, TFile } from 'obsidian';
+import {
+  App,
+  FuzzySuggestModal,
+  TFolder,
+  Vault,
+  MarkdownView,
+  TFile,
+} from 'obsidian';
 import CreateNoteModal from './CreateNoteModal';
 import { NewFileLocation } from './enums';
 
@@ -31,10 +38,12 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
     const folders = new Set() as Set<TFolder>;
     const sortedFolders = [] as TFolder[];
     let leaf = this.app.workspace.getLeaf(false);
-    if (leaf &&
+    if (
+      leaf &&
       leaf.view instanceof MarkdownView &&
       leaf.view.file instanceof TFile &&
-      leaf.view.file.parent instanceof TFolder) {
+      leaf.view.file.parent instanceof TFolder
+    ) {
       // pre-select current folder
       folders.add(leaf.view.file.parent);
       sortedFolders.push(leaf.view.file.parent);
@@ -94,10 +103,18 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
   }
 
   listenInput(evt: KeyboardEvent) {
-    if (evt.key == 'Tab') {
+    if (evt.key === 'Tab') {
       this.inputEl.value = this.findCurrentSelect()?.innerText;
-      // to disable tab selections on input
+      // Disable tab selections on input
       evt.preventDefault();
+    } else if (evt.ctrlKey && (evt.key === 'k' || evt.key === 'p')) {
+      // Ctrl+k and ctrl+p mapped to up arrow
+      const upArrowEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
+      this.inputEl.dispatchEvent(upArrowEvent);
+    } else if (evt.ctrlKey && (evt.key === 'j' || evt.key === 'n')) {
+      // Ctrl+j and ctrl+n mapped to down arrow
+      const downArrowEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+      this.inputEl.dispatchEvent(downArrowEvent);
     }
   }
 
