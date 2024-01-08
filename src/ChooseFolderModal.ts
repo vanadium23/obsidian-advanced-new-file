@@ -111,14 +111,14 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
       (evt.ctrlKey || evt.metaKey) &&
       (evt.key === 'k' || evt.key === 'p')
     ) {
-      // Ctrl+k and ctrl+p mapped to up arrow
+      // Ctrl/cmd+k and ctrl/cmd+p mapped to up arrow
       const upArrowEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
       this.inputEl.dispatchEvent(upArrowEvent);
     } else if (
       (evt.ctrlKey || evt.metaKey) &&
       (evt.key === 'j' || evt.key === 'n')
     ) {
-      // Ctrl+j and ctrl+n mapped to down arrow
+      // Ctrl/cmd+j and ctrl/cmd+n mapped to down arrow
       const downArrowEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
       this.inputEl.dispatchEvent(downArrowEvent);
     }
