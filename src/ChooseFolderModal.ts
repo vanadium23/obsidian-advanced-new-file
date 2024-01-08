@@ -37,7 +37,7 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
   init() {
     const folders = new Set() as Set<TFolder>;
     const sortedFolders = [] as TFolder[];
-    let leaf = this.app.workspace.getLeaf(false);
+    const leaf = this.app.workspace.getLeaf(false);
     if (
       leaf &&
       leaf.view instanceof MarkdownView &&
