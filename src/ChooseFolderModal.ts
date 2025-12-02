@@ -6,6 +6,7 @@ import {
   MarkdownView,
   TFile,
 } from 'obsidian';
+import AdvancedNewFilePlugin from 'main';
 import CreateNoteModal from './CreateNoteModal';
 import { NewFileLocation } from './enums';
 
@@ -28,7 +29,11 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
   createNoteModal: CreateNoteModal;
   inputListener: EventListener;
 
-  constructor(app: App, mode: NewFileLocation) {
+  constructor(
+    app: App,
+    mode: NewFileLocation,
+    private plugin: AdvancedNewFilePlugin
+  ) {
     super(app);
     this.mode = mode;
     this.init();
@@ -59,7 +64,11 @@ export default class ChooseFolderModal extends FuzzySuggestModal<TFolder> {
     this.setPlaceholder(PLACEHOLDER_TEXT);
     this.setInstructions(instructions);
     this.initChooseFolderItem();
-    this.createNoteModal = new CreateNoteModal(this.app, this.mode);
+    this.createNoteModal = new CreateNoteModal(
+      this.app,
+      this.mode,
+      this.plugin
+    );
 
     this.inputListener = this.listenInput.bind(this);
   }

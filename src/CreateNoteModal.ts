@@ -7,6 +7,7 @@ import {
   Modal,
   Instruction,
 } from 'obsidian';
+import AdvancedNewFilePlugin from 'main';
 import { NewFileLocation } from './enums';
 import { path } from './utils';
 
@@ -18,7 +19,11 @@ export default class CreateNoteModal extends Modal {
   instructionsEl: HTMLElement;
   inputListener: EventListener;
 
-  constructor(app: App, mode: NewFileLocation) {
+  constructor(
+    app: App,
+    mode: NewFileLocation,
+    private plugin: AdvancedNewFilePlugin
+  ) {
     super(app);
 
     this.mode = mode;
@@ -149,7 +154,30 @@ export default class CreateNoteModal extends Modal {
     const prependDirInput = path.join(this.newDirectoryPath, input);
     const { dir, name, ext } = path.parse(prependDirInput);
     const directoryPath = path.join(this.folder.path, dir);
-    const fileExtension = ext || '.md'; // Default to .md if no extension provided
+    const defaultExtension =
+      '.' + this.plugin.settings.extension_default.replace(/^\./gi, ''); // TODO: add GUI to make this customizable
+
+    let fileExtension = ext;
+
+    if (
+      this.plugin.settings.enable_extension_templates &&
+      defaultExtension.length > 1
+    ) {
+      if (!ext) {
+        fileExtension = defaultExtension; // Set default if no extension provided
+      }
+
+      if (fileExtension != defaultExtension) {
+        const match = this.plugin.settings.extension_templates.find((e) => {
+          return e.active && '.' + e.extension == fileExtension;
+        });
+
+        if (!match) {
+          fileExtension = fileExtension + defaultExtension; // append default to anything that is not valid (whitelisted)
+        }
+      }
+    }
+
     const filePath = path.join(directoryPath, `${name}${fileExtension}`);
 
     try {
